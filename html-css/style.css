@@ -1,0 +1,125 @@
+* 
+	CSS
+	* Cascading Style Sheets
+	* based on rulesets
+		* sets of rules pertaining to element(s)
+	* contain declarations
+		* sets of rules within specific element
+	* contain properties with values (key value pairs)
+	* revolves entirely around the Box Model
+*/
+
+/* ruleset */
+
+/* (wildcard) selector */
+* {
+	/* declaration */
+
+	/* property: value; */
+	/* key: value; */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+
+	/* example of box model, just uncomment */
+	/* border: 1px solid red;
+	padding: 5px;
+	margin: 15px; */
+}
+
+/* select using element */
+body {
+	background-color: #969c83;
+}
+
+/* example of overriding cascading sheet */
+h1 {
+	font-size: 32px;
+}
+
+nav {
+	font-weight: 700;
+}
+
+a {
+	font-size: 24px;
+}
+
+/* select using class */
+.nav-link {
+	color: rgb(197, 196, 196);
+	text-decoration: none;
+}
+
+.nav-link:hover {
+	text-decoration: underline;
+}
+
+/* select using id */
+#html-notes {
+	border: 1px solid rgb(197, 196, 196);
+	padding: 25px;
+	background-color: white;
+	list-style: none;
+}
+
+/*
+	? compound selectors
+	* utilize relationships
+	* can build relationship structure to access items
+	* ex: first child of the list item immediately inside ul that's in the body
+*/
+
+body ul > li:first-child {
+	color: red;
+}
+
+/*
+	? pseudo element
+	* provides styling aide based on addition of content
+	* it can also provide styling aide based on functionality
+	* ::marker adds a prefix to an element
+*/
+
+li::marker {
+	content: "- ";
+}
+
+#bentley {
+	width: 250px;
+	height: 250px;
+	object-fit: cover;
+	opacity: 80%;
+}
+
+/* 
+	? Box Model
+	* everything is a box
+	* a box has a border
+	* it has margin (outer)
+	* it has padding (inner)
+*/
+
+/* 
+	* Order of Specificity
+	* !important
+	* inline styling
+	* id
+	* class
+	* element
+*/
+
+div {
+	background-color: yellow;
+}
+
+.class-example {
+	background-color: aqua;
+}
+
+#id-example {
+	background-color: brown;
+}
+
+div {
+	background-color: coral !important;
+}
