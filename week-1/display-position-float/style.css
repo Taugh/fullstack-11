@@ -1,0 +1,167 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	/* height: 200vh; */
+
+	/* 
+		? Fixed vs Relative Values
+		* fixed appear the same everywhere
+		* ex: point (pt), pixel (px), straight value
+
+		* relative are relative to context
+		* examples:
+			* percent (%)
+			* em or rem - parent or root element font size
+			* vw; vh - view width and view height
+			* dvh; dvw - same as above but excluding scroll bars
+	*/
+}
+
+.parent-container {
+	background-color: beige;
+	border: 2px solid black;
+	width: 75vw;
+	height: 75vh;
+	padding: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+
+	/* position: relative; */
+}
+
+.child {
+	padding: 25px;
+}
+
+.static {
+	/* 
+		? Static
+		* default position
+		* positioned in relation to elements
+		* top, bottom, left, right, and z-index have NO effect
+	*/
+	border: 2px solid red;
+	background-color: red;
+	
+	position: static;
+	top: 250px; /* has no effect */
+}
+
+.relative {
+	/*
+		? Relative
+		* just like static
+		* can change position using top, bottom, left, right, and z-index
+		* values are relative to element's original position
+		! Avoid Using! Breaks the flow
+		*/
+
+	position: relative;
+	/* top: 25px;
+	left: 25px; */
+
+	border: 2px solid blueviolet;
+	background-color: blueviolet;
+}
+
+.absolute {
+	/* 
+		? Absolute
+		* removes element from the flow
+		* positions it relative to parent container
+		* if parent is static, it will move outside of parent container
+		* to the next relative container
+		* if parent is relative, it will move within parent container
+		* can change position using top, bottom, left, right, and z-index
+		*/
+		
+		/* position: absolute; */
+		top: 0px;
+		left: 0px;
+		/* width: 100%; */
+		
+		border: 2px solid green;
+		background-color: green;
+	}
+	
+	.fixed {
+		/* 
+		? Fixed
+		* like absolute
+		* positioned to viewport
+		* doesn't move when scrolling
+		* can change position using top, bottom, left, right, and z-index
+	*/
+
+	/* position: fixed; */
+	top: 0;
+	left: 0;
+
+	border: 2px solid teal;
+	background-color: teal;
+}
+
+.sticky {
+	/* 
+		? Sticky
+		* mix of relative and fixed
+		* relative to the flow
+		* position definition used for when you start scrolling
+		* statys fixed when scrolling; relative when stationary
+	*/
+
+	/* position: sticky; */
+	top: 75px;
+
+	border: 2px solid gray;
+	background-color: gray;
+}
+
+.display-container {
+	margin-top: 2em;
+}
+
+.block-container {
+	border: 2px solid black;
+	margin-top: 2px;
+}
+
+/* 
+	? Display Property
+	* treats an element as block or inline
+	* blocks are created top to bottom
+	* inline are positioned side-by-side
+*/
+
+.block-container {
+	display: block;
+	/* 
+		! if changed to inline, we cannot set its width and height
+	*/
+}
+
+.inline-element {
+	display: inline;
+}
+
+.inline-block {
+	/* acts like inline element */
+	display: inline-block;
+	/* allows us to set the width and height of an inline element */
+	width: 250px;
+}
+
+.float-container {
+	margin-top: 2em;
+	border: 2px solid blue;
+	height: 20vh
+}
+
+.float-box {
+	margin: 5px;
+	border: 2px solid orange;
+	background-color: orange;
+	width: 50px;
+	height: 50px;
+
+	/* Float shifts elements from left to right */
+	float: left;
+}
