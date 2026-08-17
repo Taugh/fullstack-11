@@ -1,0 +1,148 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(179, 180, 193);
+}
+
+main {
+	display: flex;
+	justify-content: center;
+	margin: 2em;
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgb(54, 98, 227);
+	color: white;
+	padding: 1em;
+}
+
+.form-main {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	max-width: 800px;
+	border: 1px solid white;
+	border-radius: 5px;
+	background-color: white;
+	padding: 1em;
+	box-shadow: lightgrey 10px 10px 10px -10px;
+}
+
+.form-fields {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.individual-data {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	gap: 1em;
+}
+
+.input-wrapper {
+	display: flex;
+	flex-direction: column;
+	
+	/* immediate input element within .input-wrapper */
+	> input {
+		margin-top: 5px;
+	}
+}
+
+.row-wrapper {
+	display: flex;
+	gap: 1em;
+}
+
+input {
+	width: 250px;
+	height: 40px;
+	border: 1px solid lightgrey;
+	border-radius: 5px;
+	font-size: 16pt;
+	color: rgba(3, 3, 3, 0.572);
+	padding: 5px 10px
+}
+
+.phone-number-wrapper {
+	flex: 1 1 100%;
+
+	> input {
+		width: inherit;
+	}
+}
+
+.addr-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+
+	.input-wrapper {
+		flex: 1 1 100%
+	}
+
+	input {
+		width: inherit;
+	}
+}
+
+#agree {
+	width: 15px;
+	height: 15px;
+}
+
+.term-container {
+	display: flex;
+}
+
+.term-inner-container {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+
+.submit {
+	width: 100%;
+	padding: 1em;
+	font-size: 16pt;
+	font-weight: 700;
+	background-color: rgb(26, 42, 89);
+	color: white;
+	border-radius: 5px;
+}
+
+.submit:hover {
+	background-color: rgb(37, 67, 157);
+	cursor: pointer;
+}
+
+.form-fields label::after {
+	content: "*";
+	color: red;
+}
+
+@media screen and (max-width: 500px) {
+	.row-wrapper {
+		flex-direction: column;
+	}
+
+	.form-main{
+		min-width: 100%;
+	}
+
+	.individual-data input {
+		width: inherit;
+	}
+}

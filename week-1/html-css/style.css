@@ -1,4 +1,4 @@
-* 
+/* 
 	CSS
 	* Cascading Style Sheets
 	* based on rulesets
@@ -46,7 +46,7 @@ a {
 
 /* select using class */
 .nav-link {
-	color: rgb(197, 196, 196);
+	color: rgb(138, 29, 29);
 	text-decoration: none;
 }
 
@@ -84,9 +84,9 @@ li::marker {
 	content: "- ";
 }
 
-#bentley {
-	width: 250px;
-	height: 250px;
+#Owl{
+	width: 350px;
+	height: 300px;
 	object-fit: cover;
 	opacity: 80%;
 }

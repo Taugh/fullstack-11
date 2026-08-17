@@ -1,0 +1,80 @@
+
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Account Open</title>
+</head>
+
+<body>
+	<header>
+		<h1>Account Creation</h1>
+		<p>Create your account by filling out the form below</p>
+	</header>
+
+	<main>
+		<form action="" class="form-main">
+			<div class="form-fields">
+				<div class="individual-data">
+					<div class="row-wrapper">
+						<div class="input-wrapper">
+							<label class="first-name" for="first_name">First Name</label>
+							<input type="text" name="fName" id="first_name" class="fName" required="true">
+						</div>
+						<div class="input-wrapper">
+							<label for="last_name">Last Name</label>
+							<input type="text" name="lName" id="last_name" class="lName">
+						</div>
+					</div>
+					<div class="row-wrapper">
+						<div class="input-wrapper">
+							<label for="DOB">Date of Birth</label>
+							<input type="date" name="DOB" id="DOB" class="DOB">
+						</div>
+						<div class="input-wrapper">
+							<label for="SSN">Social Security Number</label>
+							<input type="password" name="SSN" id="SSN" class="SSN">
+						</div>
+					</div>
+				</div>
+				<div class="input-wrapper phone-number-wrapper">
+					<label for="phone">Phone Number</label>
+					<input type="tel" name="phone" id="phone">
+				</div>
+				<div class="addr-wrapper">
+					<div class="input-wrapper">
+						<label for="address">Address</label>
+						<input type="text" name="address" id="address">
+					</div>
+					<div class="row-wrapper">
+						<div class="input-wrapper">
+							<label for="city">City</label>
+							<input type="text" name="city" id="city">
+						</div>
+						<div class="input-wrapper">
+							<label for="state">State</label>
+							<input type="text" name="state" id="state">
+						</div>
+					</div>
+					<div class="input-wrapper">
+						<label for="postcode">ZIP Code</label>
+						<input type="text" name="postcode" id="postcode" required>
+					</div>
+				</div>
+			</div>
+			<div class="term-container">
+				<div class="term-inner-container">
+					<input type="checkbox" name="agree" id="agree">
+					<label for="agree">I agree to the terms and conditions</label>
+				</div>
+			</div>
+			<div class="submit-container">
+				<button type="submit" class="submit">Submit</button>
+			</div>
+		</form>
+	</main>
+</body>
+
+</html>
