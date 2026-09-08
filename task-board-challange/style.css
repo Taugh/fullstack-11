@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.task-form {
+    margin-bottom: 1rem;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 4px;
+}
+
+.normal {
+    background-color: #e8f0fe;
+}
+
+.important {
+    background-color: #fff3cd;
+}
+
+.urgent {
+    background-color: #f8d7da;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+button {
+    cursor: pointer;
+}
