@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Service Health Overview</title>
+</head>
+<body>
+	<main class="app-shell">
+		<header class="hero">
+			<p class="eyebrow">Live status feed</p>
+			<h1>Service health overview</h1>
+			<p class="hero-copy">Search the current services and scan the latest incidents in one place.</p>
+		</header>
+
+		<section class="toolbar" aria-label="Search services">
+			<label class="search-field" for="service-search">
+				<span>Filter services</span>
+				<input id="service-search" type="search" placeholder="Type a service name or keyword" />
+			</label>
+			<button id="search-button" type="button">Search</button>
+		</section>
+
+		<p id="status-message" class="status-message">Loading services...</p>
+		<section id="services-grid" class="services-grid" aria-live="polite"></section>
+	</main>
+
+	<script src="app.js"></script>
+</body>
+</html>
