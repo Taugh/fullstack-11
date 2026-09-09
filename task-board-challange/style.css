@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     max-width: 600px;
     margin: 2rem auto;
+    background-color: #828282;
 }
 
 .task-form {
