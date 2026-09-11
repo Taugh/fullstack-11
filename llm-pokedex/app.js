@@ -96,33 +96,46 @@ function resetSearchState() {
     pokemonDisplay.innerHTML = "";
 }
 
-// --------------------
-// Render Pokemon
-// --------------------
-function renderPokemon(data, speciesData) {
-    pokemonDisplay.innerHTML = "";
+function normalizeSearchTerms(rawInput) {
+    return [...new Set(
+        rawInput
+            .split(/[\n,]+/)
+            .map((term) => term.trim().toLowerCase())
+            .filter(Boolean)
+    )];
+}
 
+function buildFlipCard(pokemonData, speciesData) {
     const card = document.createElement("div");
-    card.classList.add("pokemon-card");
+    card.classList.add("flip-card");
+
+    const inner = document.createElement("div");
+    inner.classList.add("flip-card-inner");
+
+    const front = document.createElement("div");
+    front.classList.add("flip-card-face", "flip-card-front");
+
+    const back = document.createElement("div");
+    back.classList.add("flip-card-face", "flip-card-back");
 
     const headerRow = document.createElement("div");
     headerRow.classList.add("pokemon-header");
 
     const name = document.createElement("h2");
-    name.textContent = data.name
-        ? data.name.charAt(0).toUpperCase() + data.name.slice(1)
+    name.textContent = pokemonData.name
+        ? pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)
         : "Unknown Pokémon";
 
     const id = document.createElement("p");
     id.classList.add("pokemon-id");
-    id.textContent = `#${data.id ?? "?"}`;
+    id.textContent = `#${pokemonData.id ?? "?"}`;
 
     headerRow.appendChild(name);
     headerRow.appendChild(id);
 
     const image = document.createElement("img");
-    image.src = data.sprites?.front_default || "https://placehold.co/96x96/ffffff/333333?text=No+Image";
-    image.alt = data.name || "Pokémon image";
+    image.src = pokemonData.sprites?.front_default || "https://placehold.co/96x96/ffffff/333333?text=No+Image";
+    image.alt = pokemonData.name || "Pokémon image";
     image.loading = "lazy";
 
     const genus = getEnglishValue(speciesData.genera, "genus") || "Unknown Pokémon";
@@ -135,31 +148,46 @@ function renderPokemon(data, speciesData) {
     rarityBadge.classList.add("rarity-badge", `rarity-${rarity.tone}`);
     rarityBadge.textContent = rarity.label;
 
-    const descriptionText = document.createElement("p");
-    descriptionText.classList.add("pokemon-description");
     const description = getEnglishValue(speciesData.flavor_text_entries, "flavor_text");
-    descriptionText.textContent = description
-        ? description.replace(/\f/g, " ").replace(/\n/g, " ").trim()
-        : "No description available.";
+    const summaryText = description
+        ? description.replace(/\f/g, " ").replace(/\n/g, " ").replace(/\s+/g, " ").trim()
+        : "No summary available.";
 
-    const height = document.createElement("p");
-    height.textContent = `Height: ${data.height ?? 0}`;
+    const summary = document.createElement("p");
+    summary.classList.add("pokemon-summary");
+    const teaser = summaryText.length > 55 ? `${summaryText.slice(0, 55).trim()}...` : summaryText;
+    summary.textContent = teaser;
 
-    const weight = document.createElement("p");
-    weight.textContent = `Weight: ${data.weight ?? 0}`;
+    const statPreview = document.createElement("div");
+    statPreview.classList.add("front-stat-grid");
 
-    const experience = document.createElement("p");
-    experience.textContent = `Base Experience: ${data.base_experience ?? "N/A"}`;
+    const previewStats = [
+        { label: "HP", value: pokemonData.stats?.[0]?.base_stat ?? 0 },
+        { label: "ATK", value: pokemonData.stats?.[1]?.base_stat ?? 0 },
+        { label: "SPD", value: pokemonData.stats?.[5]?.base_stat ?? 0 }
+    ];
 
-    // --------------------
-    // Types
-    // --------------------
+    previewStats.forEach((stat) => {
+        const pill = document.createElement("div");
+        pill.classList.add("front-stat-pill");
+
+        const label = document.createElement("span");
+        label.textContent = stat.label;
+
+        const value = document.createElement("strong");
+        value.textContent = stat.value;
+
+        pill.appendChild(label);
+        pill.appendChild(value);
+        statPreview.appendChild(pill);
+    });
+
     const typeHeading = document.createElement("h3");
     typeHeading.textContent = "Types";
 
     const typeBadges = document.createElement("div");
     typeBadges.classList.add("type-badges");
-    const types = Array.isArray(data.types) ? data.types : [];
+    const types = Array.isArray(pokemonData.types) ? pokemonData.types : [];
 
     if (!types.length) {
         const badge = document.createElement("span");
@@ -176,14 +204,46 @@ function renderPokemon(data, speciesData) {
         });
     }
 
-    // --------------------
-    // Abilities
-    // --------------------
+    front.appendChild(headerRow);
+    front.appendChild(image);
+    front.appendChild(category);
+    front.appendChild(rarityBadge);
+    front.appendChild(summary);
+    front.appendChild(statPreview);
+    front.appendChild(typeHeading);
+    front.appendChild(typeBadges);
+
+    const backHeader = document.createElement("div");
+    backHeader.classList.add("pokemon-header");
+    const backName = document.createElement("h3");
+    backName.textContent = name.textContent;
+    const backId = document.createElement("p");
+    backId.classList.add("pokemon-id");
+    backId.textContent = `#${pokemonData.id ?? "?"}`;
+    backHeader.appendChild(backName);
+    backHeader.appendChild(backId);
+
+    const descriptionText = document.createElement("p");
+    descriptionText.classList.add("pokemon-description");
+    descriptionText.textContent = summaryText || "No description available.";
+
+    const backInfo = document.createElement("div");
+    backInfo.classList.add("back-info");
+
+    const height = document.createElement("p");
+    height.textContent = `Height: ${pokemonData.height ?? 0}`;
+
+    const weight = document.createElement("p");
+    weight.textContent = `Weight: ${pokemonData.weight ?? 0}`;
+
+    const experience = document.createElement("p");
+    experience.textContent = `Base Experience: ${pokemonData.base_experience ?? "N/A"}`;
+
     const abilityHeading = document.createElement("h3");
     abilityHeading.textContent = "Abilities";
 
     const abilityList = document.createElement("ul");
-    const abilities = Array.isArray(data.abilities) ? data.abilities : [];
+    const abilities = Array.isArray(pokemonData.abilities) ? pokemonData.abilities : [];
 
     if (!abilities.length) {
         const li = document.createElement("li");
@@ -197,9 +257,6 @@ function renderPokemon(data, speciesData) {
         });
     }
 
-    // --------------------
-    // Stats
-    // --------------------
     const statsHeading = document.createElement("h3");
     statsHeading.textContent = "Base Stats";
 
@@ -215,7 +272,7 @@ function renderPokemon(data, speciesData) {
         speed: "Speed"
     };
 
-    const stats = Array.isArray(data.stats) ? data.stats : [];
+    const stats = Array.isArray(pokemonData.stats) ? pokemonData.stats : [];
 
     if (!stats.length) {
         const fallback = document.createElement("p");
@@ -250,23 +307,39 @@ function renderPokemon(data, speciesData) {
         });
     }
 
-    // Append all elements to the card
-    card.appendChild(headerRow);
-    card.appendChild(image);
-    card.appendChild(category);
-    card.appendChild(rarityBadge);
-    card.appendChild(descriptionText);
-    card.appendChild(height);
-    card.appendChild(weight);
-    card.appendChild(experience);
-    card.appendChild(typeHeading);
-    card.appendChild(typeBadges);
-    card.appendChild(abilityHeading);
-    card.appendChild(abilityList);
-    card.appendChild(statsHeading);
-    card.appendChild(statsContainer);
+    backInfo.appendChild(height);
+    backInfo.appendChild(weight);
+    backInfo.appendChild(experience);
+    back.appendChild(backHeader);
+    back.appendChild(descriptionText);
+    back.appendChild(abilityHeading);
+    back.appendChild(abilityList);
+    back.appendChild(statsHeading);
+    back.appendChild(statsContainer);
+    back.appendChild(backInfo);
 
-    pokemonDisplay.appendChild(card);
+    card.addEventListener("click", () => {
+        card.classList.toggle("is-flipped");
+    });
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+
+    return card;
+}
+
+function renderPokemonList(pokemonResults) {
+    pokemonDisplay.innerHTML = "";
+
+    pokemonResults.forEach((result) => {
+        if (!result?.pokemon || !result?.species) {
+            return;
+        }
+
+        const card = buildFlipCard(result.pokemon, result.species);
+        pokemonDisplay.appendChild(card);
+    });
 }
 
 // --------------------
@@ -275,9 +348,10 @@ function renderPokemon(data, speciesData) {
 async function handleSearch(event) {
     event.preventDefault();
 
-    const searchTerm = input.value.trim().toLowerCase();
+    const rawSearch = input.value.trim();
+    const searchTerms = normalizeSearchTerms(rawSearch);
 
-    if (!searchTerm) {
+    if (!searchTerms.length) {
         displayError("Please enter a Pokémon name or Pokédex number.");
         return;
     }
@@ -285,17 +359,29 @@ async function handleSearch(event) {
     showLoading();
 
     try {
-        const pokemon = await getPokemon(searchTerm);
-        const species = await getPokemonSpecies(searchTerm);
+        const results = await Promise.all(
+            searchTerms.map(async (searchTerm) => {
+                const pokemon = await getPokemon(searchTerm);
+                const species = await getPokemonSpecies(searchTerm);
 
-        if (!pokemon || !species) {
+                if (!pokemon || !species) {
+                    return null;
+                }
+
+                return { pokemon, species };
+            })
+        );
+
+        const validResults = results.filter(Boolean);
+
+        if (!validResults.length) {
             displayError("Pokémon not found. Check the name or Pokédex number and try again.");
             input.blur();
             return;
         }
 
         clearMessage();
-        renderPokemon(pokemon, species);
+        renderPokemonList(validResults);
     } catch (error) {
         console.error("Search failed:", error);
         displayError("Unable to load Pokémon data right now. Please try again.");
@@ -323,7 +409,7 @@ async function handleRandomPokemon() {
         }
 
         clearMessage();
-        renderPokemon(pokemon, species);
+        renderPokemonList([{ pokemon, species }]);
     } catch (error) {
         console.error("Random Pokémon search failed:", error);
         displayError("Unable to load a random Pokémon right now.");
@@ -340,7 +426,9 @@ form.addEventListener("submit", handleSearch);
 randomButton.addEventListener("click", handleRandomPokemon);
 clearButton.addEventListener("click", resetSearchState);
 input.addEventListener("focus", () => {
-    input.value = "";
+    if (input.value.trim()) {
+        input.value = "";
+    }
     clearMessage();
     pokemonDisplay.innerHTML = "";
 });
