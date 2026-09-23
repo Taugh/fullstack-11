@@ -6,11 +6,11 @@ CivicLens is a full-stack web application that allows people in a community to r
 
 You will build this project in stages as you move through the course. Each stage adds a new layer to the same application. By the end, you will have built a real full-stack product with:
 
-- an Express API  
-- a PostgreSQL database  
-- authentication and protected routes  
-- a React front end  
-- deployment with Docker, Caddy, and Fly.io  
+- an Express API
+- a PostgreSQL database
+- authentication and protected routes
+- a React front end
+- deployment with Docker, Caddy, and Fly.io
 
 This project is meant to help you practice building software the same way real teams do: one piece at a time.
 
@@ -20,14 +20,14 @@ This project is meant to help you practice building software the same way real t
 
 Your final application should allow users to:
 
-- create an account  
-- log in  
-- submit a community issue  
-- view all submitted issues  
-- view a single issue in detail  
-- update or delete their own issues  
-- filter issues by category or status  
-- use a React interface to interact with the app  
+- create an account
+- log in
+- submit a community issue
+- view all submitted issues
+- view a single issue in detail
+- update or delete their own issues
+- filter issues by category or status
+- use a React interface to interact with the app
 
 ---
 
@@ -63,10 +63,11 @@ civiclens/
 
 ## Phase 1: Routes (API Foundations)
 
-### Goal
+### Phase 1 Goal
+
 Build a working Express API that can handle issue data.
 
-### Step-by-Step
+### CI/CD Steps
 
 1. Initialize backend project
    - Create a `backend` folder
@@ -92,25 +93,25 @@ Build a working Express API that can handle issue data.
 
 Routes to implement:
 
-- GET /issues  
-- GET /issues/:id  
-- POST /issues  
-- PUT /issues/:id  
-- DELETE /issues/:id  
+- GET /issues
+- GET /issues/:id
+- POST /issues
+- PUT /issues/:id
+- DELETE /issues/:id
 
 5. Store data in memory (temporary)
 
-Use an array like:
+   Use an array like:
 
-- issues = []
+   - issues = []
 
-Each issue should have:
-- id
-- title
-- description
-- category
-- status
-- createdAt
+   Each issue should have:
+   - id
+   - title
+   - description
+   - category
+   - status
+   - createdAt
 
 6. Create controller functions
    - getAllIssues
@@ -127,7 +128,8 @@ Each issue should have:
 
 ## Phase 2: Database (PostgreSQL + Sequelize)
 
-### Goal
+### Phase 2 Goal
+
 Replace in-memory data with a real database.
 
 ### Step-by-Step
@@ -144,13 +146,13 @@ Replace in-memory data with a real database.
 3. Create Issue model
 
 Fields:
-- id
-- title
-- description
-- category
-- status
-- votes
-- createdAt
+   -id
+   -title
+   -description
+   -category
+   -status
+   -votes
+   -createdAt
 
 4. Sync database
 
@@ -168,7 +170,8 @@ Examples:
 
 ## Phase 3: Authentication
 
-### Goal
+### Phsdr 3 Goal
+
 Add user accounts and secure the application.
 
 ### Step-by-Step
@@ -186,8 +189,8 @@ Fields:
 
 3. Create auth routes
 
-- POST /auth/register  
-- POST /auth/login  
+- POST /auth/register
+- POST /auth/login
 
 4. Hash passwords using bcrypt
 
@@ -205,7 +208,8 @@ Fields:
 
 ## Phase 4: React Frontend
 
-### Goal
+### Phsdr 4 Goal
+
 Build the user interface for CivicLens.
 
 ### Step-by-Step
@@ -245,7 +249,8 @@ Build the user interface for CivicLens.
 
 ## Phase 5: Deployment (Docker + Caddy + Fly.io)
 
-### Goal
+### Phase 5 Goal
+
 Deploy your application to production.
 
 ### Step-by-Step
@@ -273,6 +278,7 @@ Deploy your application to production.
 ## Phase 6: CI/CD (GitHub Actions)
 
 ### Goal
+
 Automate testing and deployment.
 
 ### Step-by-Step
@@ -296,12 +302,12 @@ Automate testing and deployment.
 
 By the end of this project, you should be able to:
 
-- explain your backend API  
-- describe your database schema  
-- demonstrate authentication  
-- show your React frontend  
-- deploy your app  
-- explain your CI/CD pipeline  
+- explain your backend API
+- describe your database schema
+- demonstrate authentication
+- show your React frontend
+- deploy your app
+- explain your CI/CD pipeline
 
 ---
 
