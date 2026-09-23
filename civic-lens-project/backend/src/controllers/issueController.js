@@ -1,23 +1,40 @@
-const issues = [];
+const Issue = require('../models/Issue');
 
+// Reusable guard for required text fields.
 const isNonEmptyString = (value) => typeof value === 'string' && value.trim().length > 0;
 
-const getAllIssues = (req, res) => {
-  res.status(200).json(issues);
+const getAllIssues = async (req, res) => {
+  try {
+    // Newest issues first for easier UI display.
+    const issues = await Issue.findAll({ order: [['createdAt', 'DESC']] });
+    return res.status(200).json(issues);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to fetch issues' });
+  }
 };
 
-const getIssueById = (req, res) => {
+const getIssueById = async (req, res) => {
   const issueId = Number(req.params.id);
-  const issue = issues.find((item) => item.id === issueId);
 
-  if (!issue) {
-    return res.status(404).json({ message: 'Issue not found' });
+  // Reject non-numeric ids before querying the database.
+  if (!Number.isInteger(issueId) || issueId <= 0) {
+    return res.status(400).json({ message: 'Invalid issue id' });
   }
 
-  return res.status(200).json(issue);
+  try {
+    const issue = await Issue.findByPk(issueId);
+
+    if (!issue) {
+      return res.status(404).json({ message: 'Issue not found' });
+    }
+
+    return res.status(200).json(issue);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to fetch issue' });
+  }
 };
 
-const postIssue = (req, res) => {
+const postIssue = async (req, res) => {
   const { title, description, category, status } = req.body;
 
   if (!isNonEmptyString(title)) {
@@ -28,25 +45,26 @@ const postIssue = (req, res) => {
     return res.status(400).json({ message: 'Description is required' });
   }
 
-  const newIssue = {
-    id: issues.length + 1,
-    title: title.trim(),
-    description: description.trim(),
-    category: isNonEmptyString(category) ? category.trim() : 'general',
-    status: isNonEmptyString(status) ? status.trim() : 'open',
-    createdAt: new Date().toISOString(),
-  };
+  try {
+    // Defaults keep API behavior consistent when optional fields are missing.
+    const newIssue = await Issue.create({
+      title: title.trim(),
+      description: description.trim(),
+      category: isNonEmptyString(category) ? category.trim() : 'general',
+      status: isNonEmptyString(status) ? status.trim() : 'open',
+    });
 
-  issues.push(newIssue);
-  return res.status(201).json(newIssue);
+    return res.status(201).json(newIssue);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to create issue' });
+  }
 };
 
-const putIssue = (req, res) => {
+const putIssue = async (req, res) => {
   const issueId = Number(req.params.id);
-  const issueIndex = issues.findIndex((item) => item.id === issueId);
 
-  if (issueIndex === -1) {
-    return res.status(404).json({ message: 'Issue not found' });
+  if (!Number.isInteger(issueId) || issueId <= 0) {
+    return res.status(400).json({ message: 'Invalid issue id' });
   }
 
   if ('title' in req.body && !isNonEmptyString(req.body.title)) {
@@ -57,25 +75,48 @@ const putIssue = (req, res) => {
     return res.status(400).json({ message: 'Description cannot be empty' });
   }
 
-  issues[issueIndex] = {
-    ...issues[issueIndex],
-    ...req.body,
-    id: issues[issueIndex].id,
-  };
+  try {
+    const issue = await Issue.findByPk(issueId);
 
-  return res.status(200).json(issues[issueIndex]);
+    if (!issue) {
+      return res.status(404).json({ message: 'Issue not found' });
+    }
+
+    // Merge updates while preserving existing values for omitted fields.
+    const updatedIssue = await issue.update({
+      ...req.body,
+      title: isNonEmptyString(req.body.title) ? req.body.title.trim() : issue.title,
+      description: isNonEmptyString(req.body.description) ? req.body.description.trim() : issue.description,
+      category: isNonEmptyString(req.body.category) ? req.body.category.trim() : issue.category,
+      status: isNonEmptyString(req.body.status) ? req.body.status.trim() : issue.status,
+    });
+
+    return res.status(200).json(updatedIssue);
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to update issue' });
+  }
 };
 
-const deleteIssue = (req, res) => {
+const deleteIssue = async (req, res) => {
   const issueId = Number(req.params.id);
-  const issueIndex = issues.findIndex((item) => item.id === issueId);
 
-  if (issueIndex === -1) {
-    return res.status(404).json({ message: 'Issue not found' });
+  if (!Number.isInteger(issueId) || issueId <= 0) {
+    return res.status(400).json({ message: 'Invalid issue id' });
   }
 
-  const deletedIssue = issues.splice(issueIndex, 1);
-  return res.status(204).send();
+  try {
+    const issue = await Issue.findByPk(issueId);
+
+    if (!issue) {
+      return res.status(404).json({ message: 'Issue not found' });
+    }
+
+    // destroy() removes the record from the issues table.
+    await issue.destroy();
+    return res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({ message: 'Failed to delete issue' });
+  }
 };
 
 module.exports = {
